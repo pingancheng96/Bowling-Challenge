@@ -127,7 +127,7 @@ public class BowlingScoreboardTest
 
     // The next 2 tests test for RegisterRollToBoard of a 1 bonus roll to the last spare frame.
     [TestMethod] // spare last frame
-    public void RegisterRollToBoard_LastFrameRolls0And10And6_ThrowsNoException()
+    public void RegisterRollToBoard_Rolls0And10And6After9GutterFrames_ThrowsNoException()
     {
         GenerateGutterFrames(9);
         RegisterTwoRollsToBoard(0, 10); // last frame spare
@@ -144,7 +144,7 @@ public class BowlingScoreboardTest
 
     // The next tests test for RegisterRollToBoard of 2 bonus rolls to the last strike frame.
     [TestMethod] // strike last frame, 1st bonus = 10
-    public void RegisterRollToBoard_StrikeLastFrameRolls10And10And7_ThrowsNoException()
+    public void RegisterRollToBoard_Roll10And10And7After9GutterFrames_ThrowsNoException()
     {
         GenerateGutterFrames(9);
         RegisterTwoRollsToBoard(10, 10); // last frame starts with two 10's
@@ -160,7 +160,7 @@ public class BowlingScoreboardTest
     }
 
     [TestMethod] // strike last frame 1st bonus != 10, 1st bonus + 2nd bonus > 10 illegal
-    public void RegisterRollToBoard_StrikeLastFrameRolls10And5And6_ThrowsArgumentException()
+    public void RegisterRollToBoard_Roll10And5And6After9GutterFrames_ThrowsArgumentException()
     {
         GenerateGutterFrames(9);
         RegisterTwoRollsToBoard(10, 5); // last frame strike

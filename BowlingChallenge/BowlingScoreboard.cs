@@ -28,9 +28,9 @@ public class BowlingScoreboard
         _frames.Last().RegisterRollToFrame(pins);
 
         if (_frames.Last().IsComplete && _frames.Count < MaxFrames)
-            _frames.Add(new Frame(_frames.Count() == MaxFrames - 1));
+            _frames.Add(new Frame(_frames.Count == MaxFrames - 1));
 
-        UpdateScoreList(); // update score list
+        UpdateScoreList(); // update cumulative frame score list
     }
 
     /// <summary>
@@ -92,9 +92,11 @@ public class BowlingScoreboard
     private string GetRollDisplayString(List<int> frameRolls, int i)
     {
         string rollString = frameRolls[i].ToString();
+        
         if (frameRolls[i] == 10) rollString = "X";
         if (i > 0 && frameRolls[i - 1] < 10 && frameRolls[i] + frameRolls[i - 1] == 10)
             rollString = "/";
+        
         return rollString;
     }
 
@@ -136,8 +138,7 @@ public class BowlingScoreboard
     private int? ComputeNonLastSpareFrameScore(int frameIdx)
     {
         // next frame is available and has at least 1 roll registered
-        if (frameIdx + 1 < Math.Min(MaxFrames, _frames.Count) &&
-            _frames[frameIdx + 1].FrameRolls.Count >= 1)
+        if (frameIdx + 1 < _frames.Count && _frames[frameIdx + 1].FrameRolls.Count >= 1)
             return 10 + _frames[frameIdx + 1].FrameRolls[0];
 
         return null;
@@ -146,13 +147,11 @@ public class BowlingScoreboard
     private int? ComputeNonLastStrikeFrameScore(int frameIdx)
     {
         // next frame is available and has at least 2 rolls registered
-        if (frameIdx + 1 < Math.Min(MaxFrames, _frames.Count) &&
-            _frames[frameIdx + 1].FrameRolls.Count >= 2)
+        if (frameIdx + 1 < _frames.Count && _frames[frameIdx + 1].FrameRolls.Count >= 2)
             return 10 + _frames[frameIdx + 1].FrameRolls.Take(2).Sum();
 
         // the frame after the next is available and has at least 1 roll registered
-        if (frameIdx + 2 < Math.Min(MaxFrames, _frames.Count) &&
-                 _frames[frameIdx + 2].FrameRolls.Count >= 1)
+        if (frameIdx + 2 < _frames.Count && _frames[frameIdx + 2].FrameRolls.Count >= 1)
             return 20 + _frames[frameIdx + 2].FrameRolls[0];
 
         return null;

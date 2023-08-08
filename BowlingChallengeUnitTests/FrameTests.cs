@@ -224,7 +224,7 @@ public class FrameTest
     }
 
     [TestMethod] // no 4rd roll
-    public void RegisterRollToFrame_LastFrameRoll5And5And5And6And7_ThrowsArgumentException()
+    public void RegisterRollToFrame_LastFrameRoll5And5And6And7_ThrowsArgumentException()
     {
         Assert.ThrowsException<ArgumentException>(() =>
         {
