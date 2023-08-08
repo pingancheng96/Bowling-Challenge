@@ -1,0 +1,15 @@
+/Users/pingancheng/Desktop/BowlingChallenge/BowlingChallenge/bin/Debug/net7.0/BowlingChallenge
+/Users/pingancheng/Desktop/BowlingChallenge/BowlingChallenge/bin/Debug/net7.0/BowlingChallenge.deps.json
+/Users/pingancheng/Desktop/BowlingChallenge/BowlingChallenge/bin/Debug/net7.0/BowlingChallenge.runtimeconfig.json
+/Users/pingancheng/Desktop/BowlingChallenge/BowlingChallenge/bin/Debug/net7.0/BowlingChallenge.dll
+/Users/pingancheng/Desktop/BowlingChallenge/BowlingChallenge/bin/Debug/net7.0/BowlingChallenge.pdb
+/Users/pingancheng/Desktop/BowlingChallenge/BowlingChallenge/obj/Debug/net7.0/BowlingChallenge.csproj.AssemblyReference.cache
+/Users/pingancheng/Desktop/BowlingChallenge/BowlingChallenge/obj/Debug/net7.0/BowlingChallenge.GeneratedMSBuildEditorConfig.editorconfig
+/Users/pingancheng/Desktop/BowlingChallenge/BowlingChallenge/obj/Debug/net7.0/BowlingChallenge.AssemblyInfoInputs.cache
+/Users/pingancheng/Desktop/BowlingChallenge/BowlingChallenge/obj/Debug/net7.0/BowlingChallenge.AssemblyInfo.cs
+/Users/pingancheng/Desktop/BowlingChallenge/BowlingChallenge/obj/Debug/net7.0/BowlingChallenge.csproj.CoreCompileInputs.cache
+/Users/pingancheng/Desktop/BowlingChallenge/BowlingChallenge/obj/Debug/net7.0/BowlingChallenge.dll
+/Users/pingancheng/Desktop/BowlingChallenge/BowlingChallenge/obj/Debug/net7.0/refint/BowlingChallenge.dll
+/Users/pingancheng/Desktop/BowlingChallenge/BowlingChallenge/obj/Debug/net7.0/BowlingChallenge.pdb
+/Users/pingancheng/Desktop/BowlingChallenge/BowlingChallenge/obj/Debug/net7.0/BowlingChallenge.genruntimeconfig.cache
+/Users/pingancheng/Desktop/BowlingChallenge/BowlingChallenge/obj/Debug/net7.0/ref/BowlingChallenge.dll
