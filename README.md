@@ -24,7 +24,7 @@ Based on the rule of a bowling game, a scoreboard should support the following o
 
 Conceptually, it will be simpler and cleaner to encapsulate the relevant game information into a `BowlingScoreboard` class, and only expose methods for registering a roll, displaying the scoreboard, clearing the scoreboard, and fetching the current score.
 
-Inside the `BowlingScoreboard` class, we make another layer of abstraction to separate concepts related to frames into another class `Frame`. This is based on the fact that each game consists of ten frames, and displaying the scoreboard relies on the concept of frames. Furthermore, the evaluation of the current score also relies heavily on the frame type, i.e., open, spare, or strike. Finally, each frame is a relatively self-contained entity, i.e., it has its own rolls, types, etc, so it is convenient to consider each frame as an individual entity.
+Inside the `BowlingScoreboard` class, we make another layer of abstraction to separate frame-specific information and operations into another class `Frame`. This is based on the fact that each game consists of ten frames, and each frame is a relatively self-contained entity, i.e., it has its own rolls, types, etc. Furthermore, the calculation of the current score and the displaying of the scoreboard both rely heavily on the concept of frames.
 
 For convenience, we define a `FrameType` enum type, which consists of three values `FrameType.Open`, `FrameType.Spare`, `FrameType.Strike`.
 
@@ -32,13 +32,13 @@ We now provide a bit more details of the two main classes we design.
 
 #### 2.2.1 The `Frame` Class
 
-The `Frame` class encapsulates the logic of actually registering a roll to a frame, which includes validating the roll data, adding the roll to the list of rolls this frame consists of, and update the frame type and deciding if this frame is complete.
+The `Frame` class encapsulates the logic of actually registering a roll to a frame, which includes validating the roll data, adding the roll to the list of rolls this frame consists of, updating the frame type and deciding if this frame is complete.
 
 It consits of the following properties with public getters:
 
-* `public bool IsComplete`: indicating if the current frame is finished.
+* `public bool IsComplete`: indicating if the current frame is complete.
 * `public List<int> FrameRolls`: the rolls this frame consists of.
-* `public FrameType FrameType`: the type of this frame, which can be `FrameType.Strike`,  `FrameType.Spare`, `FrameType.Open`.
+* `public FrameType FrameType`: the type of this frame, which can be `FrameType.Strike`,  `FrameType.Spare`, or `FrameType.Open`.
 
 It provides the following public method for `BowlingScoreboard` to invoke.
 
@@ -48,7 +48,7 @@ We ignore the details of private methods in `Frame` that are used to help handle
 
 #### 2.2.2 The `BowlingScoreboard` Class
 
-The `BowlingScoreboard` is the main class in the system. It maintains a list of frames and a list of cumulative frame scores. Upon receiving an input roll for registration, it first validates if the roll can be added, i.e., if the game is over, and then invoke the `RegisterRollToFrame()` method of the current frame. Depending on if the current frame is complete, it may create a new frame. Then it updates the cumulative frame score list. Using the frame list and the cumulative frame score list, it provides interfaces for returning the current game information.
+The `BowlingScoreboard` is the main class in the system. It maintains a list of frames and a list of cumulative frame scores. Upon receiving an input roll for registration, it first validates if the roll can be added, i.e., if the game is over, and then invokes the `RegisterRollToFrame()` method of the current frame. Depending on if the current frame is complete, it may create a new frame. Then it updates the cumulative frame score list. Using the frame list and the cumulative frame score list, it provides interfaces for returning the current game information.
 
 The `BowlingScoreboard` class has the following three private field members.
 
@@ -58,7 +58,7 @@ The `BowlingScoreboard` class has the following three private field members.
 
 It exposes the following three methods for driver programs to invoke:
 
-* `public void RegisterRollToBoard(int pins)`: which first registers the roll to the current frame by invoking the `RegisterRollToFrame(int pins, bool isLastFrame)` method of the frame, and then updates `_cmlFrameScores`.
+* `public void RegisterRollToBoard(int pins)`: which first registers the roll to the current frame by invoking the `RegisterRollToFrame()` method of the frame, and then updates `_cmlFrameScores`.
 
 * `public int GetTotalScore()`: which returns the current total score.
 * `public override string ToString()`: which returns a string representation of the game board.
@@ -66,32 +66,32 @@ It exposes the following three methods for driver programs to invoke:
 
 We ignore the details of private methods in `BowlingScoreboard` that are used to update `_cmlFrameScores` and formatting the output.
 
-### 2.3 Example Output and Tests
+### 2.3 Example Output and Unit Tests
 
-As a simple example, we run the follwing examples to demonstrate the use of the system.
+We run the follwing simple examples to demonstrate the use of the system.
 
 ```C#
 using BowlingChallenge;
 
 BowlingScoreboard bowlingScoreboard = new BowlingScoreboard();
 
-List<int> exampleRolls = new() {1,4,4,5,6,4,5,5,10,0,1,7,3,6,4,10,2,8,6};
-
+// example game
+List<int> exampleRolls = new() { 1, 4, 4, 5, 6, 4, 5, 5, 10, 0, 1, 7, 3, 6, 4, 10, 2, 8, 6 };
 foreach (var t in exampleRolls)
     bowlingScoreboard.RegisterRollToBoard(t);
-
 Console.WriteLine(bowlingScoreboard.ToString());
 Console.WriteLine($"Total Score: {bowlingScoreboard.GetTotalScore()}\n");
 
 bowlingScoreboard.ClearScoreboard();
 
+// gutter game
 RegisterRepeatedRolls(0, 20);
 Console.WriteLine(bowlingScoreboard.ToString());
 Console.WriteLine($"Total Score: {bowlingScoreboard.GetTotalScore()}\n");
 
-
 bowlingScoreboard.ClearScoreboard();
 
+// perfect game
 RegisterRepeatedRolls(10, 12);
 Console.WriteLine(bowlingScoreboard.ToString());
 Console.WriteLine($"Total Score: {bowlingScoreboard.GetTotalScore()}\n");
