@@ -1,9 +1,9 @@
 ## 1 Introduction
 
-In this coding task, we are to design a scoreboard for [ten-pin bowling]( https://en.wikipedia.org/wiki/Ten-pin_bowling) using C# on .NET. The rules of bowling can be summarized as follows:
+In this coding task, we are to design a scoreboard for [ten-pin bowling]( https://en.wikipedia.org/wiki/Ten-pin_bowling) using C# on .NET. The rules of ten-pin bowling can be summarized as follows:
 
 * Each game consists of ten frames. In each frame, a player has two opportunities (rolls) to knock down all the ten pins.
-* In each frame, if a player knocks down all the pins with the **first** (resp. **second**) roll, then this is a **strike** (resp. **spare**) frame. Otherwise, it is an open **frame**.
+* In each frame, if a player knocks down all the pins with the **first** (resp. **second**) roll, then this is a **strike** (resp. **spare**) frame. Otherwise, it is an **open** frame.
 * If the last frame is a **strike** (resp. **spare**), the player has **two** (resp. **one**) more bonus rolls.
 * The score of a **strike** (resp. **spare**) frame equals the pins knocked down in the current frame (i.e. $10$) plus that in the next **two** (resp. **one**) rolls.  The score of an **open** frame is the number of pins knocked down in that frame.
 * The final score is the sum of the score of all frames.
@@ -16,7 +16,7 @@ Based on the rule of a bowling game, a scoreboard should support the following o
 
 1. **Register a roll to the scoreboard.** After each roll, we should be able to register the result, i.e., the number of pins knocked down, to the scoreboard. The scoreboard should then update the current score if needed upon receiving a new roll. 
 2. **Display the scoreboard.** As a scoreboard, it should be able to display the current status of the game, i.e., the result of each frame so far and the current total score. 
-   * We remark that according to the bowling convention, a roll that results in a strike frame should be marked as `X`, and a roll that results in a spare frame should be marked as `/`.
+   * We remark that according to the bowling convention, a roll that results in a strike frame should be marked as `X`, and a roll that results in a spare frame should be marked as `/`. Otherwise it is marked as the number of pins it knocks down.
 3. **Clear the scoreboard.** We should be able to clear the scoreboard for a new game.
 4. **Provide the current total score**. It will be helpful to have the functionality of providing the current total score of the game.
 
@@ -32,7 +32,7 @@ We now provide a bit more details of the two main classes we design.
 
 #### 2.2.1 The `Frame` Class
 
-The `Frame` class encapsulates the logic of actually registering a roll to a frame, which includes validating the roll data, adding the roll to the list of rolls this frame consists of, updating the frame type and deciding if this frame is complete.
+The `Frame` class encapsulates the logic of actually registering a roll to a frame, which includes validating the roll data, adding the roll to the list of rolls this frame consists of, updating the frame type, and deciding if this frame is complete.
 
 It consits of the following properties with public getters:
 
@@ -42,7 +42,7 @@ It consits of the following properties with public getters:
 
 It provides the following public method for `BowlingScoreboard` to invoke.
 
-* `public void RegisterRollToFrame(int pins, bool isLastFrame)`: register a roll to the frame, which includes adding the roll to `FrameRolls`, and potentially update `IsComplete` and `FrameType` of the frame.
+* `public void RegisterRollToFrame(int pins, bool isLastFrame)`: register a roll to the frame, which includes adding the roll to `FrameRolls`, and potentially updating `IsComplete` and `FrameType` of the frame.
 
 We ignore the details of private methods in `Frame` that are used to help handle roll registration.
 
