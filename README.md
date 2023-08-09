@@ -12,7 +12,7 @@ In this coding task, we are to design a scoreboard for [ten-pin bowling]( https:
 
 ### 2.1 Analysis of the Requirement
 
-Based on the rule of a bowling game, a scoreboard should support the following operations:
+According to the rules of the bowling game, a scoreboard should support the following operations:
 
 1. **Register a roll to the scoreboard.** After each roll, we should be able to register the result, i.e., the number of pins knocked down, to the scoreboard. The scoreboard should then update the current score if needed upon receiving a new roll. 
 2. **Display the scoreboard.** As a scoreboard, it should be able to display the current status of the game, i.e., the result of each frame so far and the current total score. 
@@ -22,7 +22,7 @@ Based on the rule of a bowling game, a scoreboard should support the following o
 
 ### 2.2 Our Design
 
-Conceptually, it will be simpler and cleaner to encapsulate the relevant game information into a `BowlingScoreboard` class, and only expose methods for registering a roll, displaying the scoreboard, clearing the scoreboard, and fetching the current score.
+Conceptually, it will be simpler and cleaner to encapsulate the relevant scoreboard information and operations into a `BowlingScoreboard` class, and only expose methods for registering a roll, displaying the scoreboard, clearing the scoreboard, and fetching the current score.
 
 Inside the `BowlingScoreboard` class, we make another layer of abstraction to separate frame-specific information and operations into another class `Frame`. This is based on the fact that each game consists of ten frames, and each frame is a relatively self-contained entity, i.e., it has its own rolls, types, etc. Furthermore, the calculation of the current score and the displaying of the scoreboard both rely heavily on the concept of frames.
 
@@ -34,7 +34,7 @@ We now provide a bit more details of the two main classes we design.
 
 The `Frame` class encapsulates the logic of actually registering a roll to a frame, which includes validating the roll data, adding the roll to the list of rolls this frame consists of, updating the frame type, and deciding if this frame is complete.
 
-It consits of the following properties with public getter and private setter:
+It consits of the following two properties with public getter and private setter:
 
 * `public bool IsComplete`: indicating if the current frame is complete.
 * `public FrameType FrameType`: the type of this frame, which can be `FrameType.Strike`,  `FrameType.Spare`, or `FrameType.Open`.
@@ -50,7 +50,7 @@ We will allow reading the data in `_frameRolls`, but not setting, so we wrap `_f
 
 It also provides the following public method for `BowlingScoreboard` to invoke.
 
-* `public void RegisterRollToFrame(int pins)`: register a roll to the frame, which includes adding the roll to `FrameRolls`, and potentially updating `IsComplete` and `FrameType` of the frame.
+* `public void RegisterRollToFrame(int pins)`: which registers a roll to the frame, and it includes adding the roll to `FrameRolls`, and potentially updating `IsComplete` and `FrameType` of the frame.
 
 We ignore the details of private methods in `Frame` that are used to help handle roll registration.
 
@@ -66,7 +66,7 @@ The `BowlingScoreboard` class has the following three private field members.
 
 It exposes the following three methods for driver programs to invoke:
 
-* `public void RegisterRollToBoard(int pins)`: which first registers the roll to the current frame by invoking the `RegisterRollToFrame()` method of the frame, and then updates `_cmlFrameScores`.
+* `public void RegisterRollToBoard(int pins)`: which first registers the roll to the scoreboard by invoking the `RegisterRollToFrame()` method of the current frame, and then updates `_cmlFrameScores`.
 
 * `public int GetTotalScore()`: which returns the current total score.
 * `public override string ToString()`: which returns a string representation of the game board.
@@ -79,6 +79,8 @@ We ignore the details of private methods in `BowlingScoreboard` that are used to
 We run the follwing simple examples to demonstrate the use of the system.
 
 ```C#
+// in Program.cs
+
 using BowlingChallenge;
 
 BowlingScoreboard bowlingScoreboard = new BowlingScoreboard();

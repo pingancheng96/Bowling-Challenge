@@ -31,7 +31,7 @@ public class Frame
         if (IsComplete)
             throw new ArgumentException("Invalid roll: cannot register a roll to a complete frame.");
         if (pins is < 0 or > 10)
-            throw new ArgumentOutOfRangeException(nameof(pins),
+            throw new ArgumentOutOfRangeException(nameof(pins), 
                 "Invalid roll: pins knocked down must be between 0 and 10.");
 
         switch (_frameRolls.Count)
@@ -82,7 +82,6 @@ public class Frame
     private void ValidatePinsSum(int prevPins, int pins)
     {
         if (prevPins + pins is < 0 or > 10)
-            throw new ArgumentException("Invalid roll: knocked down more pins than available.",
-                nameof(pins));
+            throw new ArgumentException("Invalid roll: knocked down more pins than available.");
     }
 }
