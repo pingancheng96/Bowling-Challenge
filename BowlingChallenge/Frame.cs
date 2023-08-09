@@ -8,11 +8,13 @@ namespace BowlingChallenge;
 public class Frame
 {
     public bool IsComplete { get; private set; }
-    private readonly List<int> _frameRolls = new(); // rolls of the frame
-    public ReadOnlyCollection<int> FrameRolls => _frameRolls.AsReadOnly();
     public FrameType FrameType { get; private set; } // type of the frame, can be open, spare, or strike
+    public ReadOnlyCollection<int> FrameRolls => _frameRolls.AsReadOnly();
+    private readonly List<int> _frameRolls = new(); // rolls of the frame
     private readonly bool _isLastFrame;
+    
 
+    
     /// <summary>
     /// Constructor of <c>Frame</c> class.
     /// </summary>

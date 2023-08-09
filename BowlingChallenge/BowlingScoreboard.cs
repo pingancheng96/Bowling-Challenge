@@ -1,6 +1,4 @@
-﻿using System.Collections.ObjectModel;
-
-namespace BowlingChallenge;
+﻿namespace BowlingChallenge;
 
 /// <summary>
 /// Class <c>BowlingScoreboard</c> models a scoreboard for a ten-pin bowling game.
@@ -69,21 +67,21 @@ public class BowlingScoreboard
 
         for (int i = 0; i < _frames.Count; ++i)
         {
-            ReadOnlyCollection<int> frameRolls = _frames[i].FrameRolls;
+            Frame curFrame = _frames[i];
             int? displayScore = i < _cmlFrameScores.Count ? _cmlFrameScores[i] : null;
-            switch (frameRolls.Count)
+            switch (curFrame.FrameRolls.Count)
             {
                 case 1:
                     displayString += string.Format("Frame: {0, 3}\t Result: {1, 3}\t\t Cumulative Frame Score: {2, 3}\n",
-                        i + 1, GetRollDisplayString(frameRolls, 0), displayScore);
+                        i + 1, GetRollDisplayString(curFrame, 0), displayScore);
                     break;
                 case 2:
                     displayString += string.Format("Frame: {0, 3}\t Result: {1, 3} {2, 3}\t Cumulative Frame Score: {3, 3}\n",
-                        i + 1, GetRollDisplayString(frameRolls, 0), GetRollDisplayString(frameRolls, 1), displayScore);
+                        i + 1, GetRollDisplayString(curFrame, 0), GetRollDisplayString(curFrame, 1), displayScore);
                     break;
                 case 3:
                     displayString += string.Format("Frame: {0, 3}\t Result: {1, 3} {2, 3} {3, 3}\t Cumulative Frame Score: {4, 3}\n",
-                        i + 1, GetRollDisplayString(frameRolls, 0), GetRollDisplayString(frameRolls, 1), GetRollDisplayString(frameRolls, 2), displayScore);
+                        i + 1, GetRollDisplayString(curFrame, 0), GetRollDisplayString(curFrame, 1), GetRollDisplayString(curFrame, 2), displayScore);
                     break;
             }
         }
@@ -91,12 +89,12 @@ public class BowlingScoreboard
         return displayString;
     }
 
-    private string GetRollDisplayString(ReadOnlyCollection<int> frameRolls, int i)
+    private string GetRollDisplayString(Frame frame, int i)
     {
-        string rollDisplayString = frameRolls[i].ToString();
+        string rollDisplayString = frame.FrameRolls[i].ToString();
         
-        if (frameRolls[i] == 10) rollDisplayString = "X";
-        if (i > 0 && frameRolls[i - 1] < 10 && frameRolls[i] + frameRolls[i - 1] == 10)
+        if (frame.FrameRolls[i] == 10) rollDisplayString = "X";
+        if (i > 0 && frame.FrameRolls[i-1] < 10 && frame.FrameRolls[i] + frame.FrameRolls[i-1] == 10)
             rollDisplayString = "/";
         
         return rollDisplayString;

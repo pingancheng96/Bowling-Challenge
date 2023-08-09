@@ -85,8 +85,8 @@ BowlingScoreboard bowlingScoreboard = new BowlingScoreboard();
 
 // example game
 List<int> exampleRolls = new() { 1, 4, 4, 5, 6, 4, 5, 5, 10, 0, 1, 7, 3, 6, 4, 10, 2, 8, 6 };
-foreach (var t in exampleRolls)
-    bowlingScoreboard.RegisterRollToBoard(t);
+foreach (int roll in exampleRolls)
+    bowlingScoreboard.RegisterRollToBoard(roll);
 Console.WriteLine(bowlingScoreboard.ToString());
 Console.WriteLine($"Total Score: {bowlingScoreboard.GetTotalScore()}\n");
 
@@ -167,7 +167,7 @@ We also have a corresponding unit test for the system implemented. We tested the
 * `Frame` class
   * `RegisterRollToFrame()` method
 
-We omit the test for the `ClearBoard()` method for `Scoreboard` class as its implementation is very straightforward.
+We omit the test for the `ClearBoard()` method for the `Scoreboard` class as its implementation is very straightforward.
 
 The result of the unit test is as follows.
 

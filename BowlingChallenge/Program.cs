@@ -4,8 +4,8 @@ BowlingScoreboard bowlingScoreboard = new BowlingScoreboard();
 
 // example game
 List<int> exampleRolls = new() { 1, 4, 4, 5, 6, 4, 5, 5, 10, 0, 1, 7, 3, 6, 4, 10, 2, 8, 6 };
-foreach (var t in exampleRolls)
-    bowlingScoreboard.RegisterRollToBoard(t);
+foreach (int roll in exampleRolls)
+    bowlingScoreboard.RegisterRollToBoard(roll);
 Console.WriteLine(bowlingScoreboard.ToString());
 Console.WriteLine($"Total Score: {bowlingScoreboard.GetTotalScore()}\n");
 
