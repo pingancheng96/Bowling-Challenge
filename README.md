@@ -50,7 +50,7 @@ We will allow reading the data in `_frameRolls`, but not setting, so we wrap `_f
 
 It also provides the following public method for `BowlingScoreboard` to invoke.
 
-* `public void RegisterRollToFrame(int pins, bool isLastFrame)`: register a roll to the frame, which includes adding the roll to `FrameRolls`, and potentially updating `IsComplete` and `FrameType` of the frame.
+* `public void RegisterRollToFrame(int pins)`: register a roll to the frame, which includes adding the roll to `FrameRolls`, and potentially updating `IsComplete` and `FrameType` of the frame.
 
 We ignore the details of private methods in `Frame` that are used to help handle roll registration.
 
