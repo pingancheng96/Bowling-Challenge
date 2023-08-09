@@ -1,4 +1,6 @@
-﻿namespace BowlingChallenge;
+﻿using System.Collections.ObjectModel;
+
+namespace BowlingChallenge;
 
 /// <summary>
 /// Class <c>Frame</c> models a frame in a blowing game.
@@ -6,7 +8,8 @@
 public class Frame
 {
     public bool IsComplete { get; private set; }
-    public List<int> FrameRolls { get; } = new(); // rolls of the frame
+    private readonly List<int> _frameRolls = new(); // rolls of the frame
+    public ReadOnlyCollection<int> FrameRolls => _frameRolls.AsReadOnly();
     public FrameType FrameType { get; private set; } // type of the frame, can be open, spare, or strike
     private readonly bool _isLastFrame;
 
@@ -31,7 +34,7 @@ public class Frame
             throw new ArgumentOutOfRangeException(nameof(pins),
                 "Invalid roll: pins knocked down must be between 0 and 10.");
 
-        switch (FrameRolls.Count)
+        switch (_frameRolls.Count)
         {
             case 0:
                 AddFirstRollAndUpdateFrameType(pins);
@@ -52,28 +55,28 @@ public class Frame
 
     private void AddFirstRollAndUpdateFrameType(int pins)
     {
-        FrameRolls.Add(pins);
+        _frameRolls.Add(pins);
         if (pins == 10) FrameType = FrameType.Strike;
     }
 
     private void AddSecondRollAndUpdateFrameType(int pins)
     {
         if (FrameType != FrameType.Strike)
-            ValidatePinsSum(FrameRolls[0], pins);
+            ValidatePinsSum(_frameRolls[0], pins);
 
-        FrameRolls.Add(pins);
+        _frameRolls.Add(pins);
 
-        if (FrameRolls[0] + pins < 10)
+        if (_frameRolls[0] + pins < 10)
             FrameType = FrameType.Open;
         else
-            FrameType = FrameRolls[0] == 10 ? FrameType.Strike : FrameType.Spare;
+            FrameType = _frameRolls[0] == 10 ? FrameType.Strike : FrameType.Spare;
     }
 
     private void AddThirdRollAndUpdateFrameType(int pins)
     {
-        if (FrameType == FrameType.Strike && FrameRolls[1] < 10)
-            ValidatePinsSum(FrameRolls[1], pins);
-        FrameRolls.Add(pins);
+        if (FrameType == FrameType.Strike && _frameRolls[1] < 10)
+            ValidatePinsSum(_frameRolls[1], pins);
+        _frameRolls.Add(pins);
     }
 
     private void ValidatePinsSum(int prevPins, int pins)

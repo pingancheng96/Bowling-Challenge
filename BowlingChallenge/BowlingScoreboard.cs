@@ -1,4 +1,6 @@
-﻿namespace BowlingChallenge;
+﻿using System.Collections.ObjectModel;
+
+namespace BowlingChallenge;
 
 /// <summary>
 /// Class <c>BowlingScoreboard</c> models a scoreboard for a ten-pin bowling game.
@@ -16,7 +18,7 @@ public class BowlingScoreboard
     }
 
     /// <summary>    
-    /// This method registers a roll to the scoreboard and updates the current score if needed.
+    /// This method registers a roll to the scoreboard and updates the cumulative score list if needed.
     /// </summary>
     /// <param name="pins"> The number of pins knocked down of the roll. </param>
     /// <exception cref="ArgumentException"> Thrown when registering a roll to an already complete game. </exception>
@@ -27,10 +29,10 @@ public class BowlingScoreboard
 
         _frames.Last().RegisterRollToFrame(pins);
 
-        if (_frames.Last().IsComplete && _frames.Count < MaxFrames)
+        if (_frames.Count < MaxFrames && _frames.Last().IsComplete)
             _frames.Add(new Frame(_frames.Count == MaxFrames - 1));
 
-        UpdateScoreList(); // update cumulative frame score list
+        UpdateCmlFrameScores(); // update cumulative frame score list
     }
 
     /// <summary>
@@ -67,7 +69,7 @@ public class BowlingScoreboard
 
         for (int i = 0; i < _frames.Count; ++i)
         {
-            List<int> frameRolls = _frames[i].FrameRolls;
+            ReadOnlyCollection<int> frameRolls = _frames[i].FrameRolls;
             int? displayScore = i < _cmlFrameScores.Count ? _cmlFrameScores[i] : null;
             switch (frameRolls.Count)
             {
@@ -89,18 +91,18 @@ public class BowlingScoreboard
         return displayString;
     }
 
-    private string GetRollDisplayString(List<int> frameRolls, int i)
+    private string GetRollDisplayString(ReadOnlyCollection<int> frameRolls, int i)
     {
-        string rollString = frameRolls[i].ToString();
+        string rollDisplayString = frameRolls[i].ToString();
         
-        if (frameRolls[i] == 10) rollString = "X";
+        if (frameRolls[i] == 10) rollDisplayString = "X";
         if (i > 0 && frameRolls[i - 1] < 10 && frameRolls[i] + frameRolls[i - 1] == 10)
-            rollString = "/";
+            rollDisplayString = "/";
         
-        return rollString;
+        return rollDisplayString;
     }
 
-    private void UpdateScoreList()
+    private void UpdateCmlFrameScores()
     {
         int frameToEvalIdx = _cmlFrameScores.Count; // index of the frame to evaluate score
         Frame frameToEval = _frames[frameToEvalIdx];
@@ -121,21 +123,21 @@ public class BowlingScoreboard
         switch (frameToEval.FrameType)
         {
             case FrameType.Spare:
-                frameScore = ComputeNonLastSpareFrameScore(frameToEvalIdx);
+                frameScore = GetNonLastSpareFrameScore(frameToEvalIdx);
                 break;
             case FrameType.Strike:
-                frameScore = ComputeNonLastStrikeFrameScore(frameToEvalIdx);
+                frameScore = GetNonLastStrikeFrameScore(frameToEvalIdx);
                 break;
         }
         if (frameScore == null) return; // bonus rolls not thrown yet, just return
         _cmlFrameScores.Add(curSum + (int)frameScore);
 
         // cascading update if there are frames left
-        if (_cmlFrameScores.Count < MaxFrames)
-            UpdateScoreList();
+        if (_cmlFrameScores.Count < _frames.Count)
+            UpdateCmlFrameScores();
     }
 
-    private int? ComputeNonLastSpareFrameScore(int frameIdx)
+    private int? GetNonLastSpareFrameScore(int frameIdx)
     {
         // next frame is available and has at least 1 roll registered
         if (frameIdx + 1 < _frames.Count && _frames[frameIdx + 1].FrameRolls.Count >= 1)
@@ -144,7 +146,7 @@ public class BowlingScoreboard
         return null;
     }
 
-    private int? ComputeNonLastStrikeFrameScore(int frameIdx)
+    private int? GetNonLastStrikeFrameScore(int frameIdx)
     {
         // next frame is available and has at least 2 rolls registered
         if (frameIdx + 1 < _frames.Count && _frames[frameIdx + 1].FrameRolls.Count >= 2)
