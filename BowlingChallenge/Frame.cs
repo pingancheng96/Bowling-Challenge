@@ -13,8 +13,6 @@ public class Frame
     private readonly List<int> _frameRolls = new(); // rolls of the frame
     private readonly bool _isLastFrame;
     
-
-    
     /// <summary>
     /// Constructor of <c>Frame</c> class.
     /// </summary>
@@ -25,7 +23,7 @@ public class Frame
     }
 
     /// <summary>
-    /// Add a roll to <c>FrameRolls</c>, update <c>FrameType</c> and <c>IsComplete</c> if necessary.
+    /// Add a roll to <c>_frameRolls</c>, update <c>FrameType</c> and <c>IsComplete</c> if necessary.
     /// </summary>
     /// <param name="pins"> Integer parameter <c>pins</c> indicates the number of pins knocked down in the roll to register. </param>
     public void RegisterRollToFrame(int pins)
@@ -84,7 +82,7 @@ public class Frame
     private void ValidatePinsSum(int prevPins, int pins)
     {
         if (prevPins + pins is < 0 or > 10)
-            throw new ArgumentException("Invalid roll: cannot knock down more than 10 pins if not strike",
+            throw new ArgumentException("Invalid roll: knocked down more pins than available.",
                 nameof(pins));
     }
 }

@@ -54,7 +54,7 @@ public class BowlingScoreboard
     {
         _frames = new();
         _cmlFrameScores = new();
-        _frames.Add(new Frame(_frames.Count() == MaxFrames - 1));
+        _frames.Add(new Frame(_frames.Count == MaxFrames - 1));
     }
 
     /// <summary>
@@ -67,21 +67,21 @@ public class BowlingScoreboard
 
         for (int i = 0; i < _frames.Count; ++i)
         {
-            Frame curFrame = _frames[i];
+            Frame frameToDisplay = _frames[i];
             int? displayScore = i < _cmlFrameScores.Count ? _cmlFrameScores[i] : null;
-            switch (curFrame.FrameRolls.Count)
+            switch (frameToDisplay.FrameRolls.Count)
             {
                 case 1:
                     displayString += string.Format("Frame: {0, 3}\t Result: {1, 3}\t\t Cumulative Frame Score: {2, 3}\n",
-                        i + 1, GetRollDisplayString(curFrame, 0), displayScore);
+                        i + 1, GetRollDisplayString(frameToDisplay, 0), displayScore);
                     break;
                 case 2:
                     displayString += string.Format("Frame: {0, 3}\t Result: {1, 3} {2, 3}\t Cumulative Frame Score: {3, 3}\n",
-                        i + 1, GetRollDisplayString(curFrame, 0), GetRollDisplayString(curFrame, 1), displayScore);
+                        i + 1, GetRollDisplayString(frameToDisplay, 0), GetRollDisplayString(frameToDisplay, 1), displayScore);
                     break;
                 case 3:
                     displayString += string.Format("Frame: {0, 3}\t Result: {1, 3} {2, 3} {3, 3}\t Cumulative Frame Score: {4, 3}\n",
-                        i + 1, GetRollDisplayString(curFrame, 0), GetRollDisplayString(curFrame, 1), GetRollDisplayString(curFrame, 2), displayScore);
+                        i + 1, GetRollDisplayString(frameToDisplay, 0), GetRollDisplayString(frameToDisplay, 1), GetRollDisplayString(frameToDisplay, 2), displayScore);
                     break;
             }
         }
