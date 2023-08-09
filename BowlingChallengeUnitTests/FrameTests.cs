@@ -9,7 +9,7 @@ public class FrameTest
     private readonly Frame _lastFrame = new(true);
 
     // ---------- Part 1: Tests for a non-last frame
-    // The next two tests test for RegisterRollToFrame with a roll of pins < 0 and > 10
+    // The next 2 tests test for RegisterRollToFrame with a roll of pins < 0 and > 10
     [TestMethod]
     public void RegisterRollToFrame_NonLastFrameRollNeg1_ThrowsOutOfRangeException()
     {
@@ -22,7 +22,7 @@ public class FrameTest
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => _nonLastFrame.RegisterRollToFrame(11));
     }
 
-    // This test tests for RegisterRollToFrame with 0 <= pins <= 10
+    // The next test tests for RegisterRollToFrame with 0 <= pins <= 10
     [TestMethod]
     public void RegisterRollToFrame_NonLastFrameRoll4_GetsIncompleteFrameWith4()
     {
@@ -32,7 +32,7 @@ public class FrameTest
         CollectionAssert.AreEqual(new List<int> { 4 }, _nonLastFrame.FrameRolls);
     }
 
-    // The next three tests test for RegisterRollToFrame with rolls that give a strike, spare, and open non-last frame.
+    // The next 4 tests test for RegisterRollToFrame with rolls that give a strike, spare, and open non-last frame.
     [TestMethod] // strike non-last frame
     public void RegisterRollToFrame_NonLastFrameRoll10_GetsCompleteStrikeFrameWith10()
     {
@@ -73,7 +73,7 @@ public class FrameTest
         CollectionAssert.AreEqual(new List<int> { 4, 5 }, _nonLastFrame.FrameRolls);
     }
 
-    // The next two tests test for RegisterRollToFrame with an invalid 2rd roll to a non-last frame.
+    // The next 2 tests test for RegisterRollToFrame with an invalid 2rd roll to a non-last frame.
     [TestMethod] // non-last frame roll 1 + roll 2 > 10 illegal
     public void RegisterRollToFrame_NonLastFrameRoll4And7_ThrowsArgumentException()
     {
@@ -86,7 +86,7 @@ public class FrameTest
         Assert.ThrowsException<ArgumentException>(() => RegisterTwoRollsToFrame(_nonLastFrame, 10, 7));
     }
 
-    // the next two tests test for RegisterRollToFrame with an invalid 3rd roll to a non-last frame
+    // the next 2 tests test for RegisterRollToFrame with an invalid 3rd roll to a non-last frame
     [TestMethod] // spare non-last frame no 3rd roll
     public void RegisterRollToFrame_NonLastFrameRoll1And9And7_ThrowsArgumentException()
     {
@@ -110,7 +110,7 @@ public class FrameTest
         CollectionAssert.AreEqual(new List<int> { 5 }, _lastFrame.FrameRolls);
     }
 
-    // The next three tests test for RegisterRollToFrame with rolls that give a strike, spare, and open last frame
+    // The next 3 tests test for RegisterRollToFrame with rolls that give a strike, spare, and open last frame
     [TestMethod] // strike last frame
     public void RegisterRollToFrame_LastFrameRoll10_GetsIncompleteStrikeFrameWith10()
     {
@@ -141,7 +141,7 @@ public class FrameTest
         CollectionAssert.AreEqual(new List<int> { 2, 7 }, _lastFrame.FrameRolls);
     }
 
-    // The next two tests test for RegisterRollToFrame with a 2nd roll to a strike last frame
+    // The next 2 tests test for RegisterRollToFrame with a 2nd roll to a strike last frame
     [TestMethod] // strike last frame, 1st bonus != 10
     public void RegisterRollToFrame_LastFrameRoll10And7_GetsIncompleteStrikeFrameWith10And7()
     {
@@ -162,7 +162,7 @@ public class FrameTest
         CollectionAssert.AreEqual(new List<int> { 10, 10 }, _lastFrame.FrameRolls);
     }
 
-    // The next three tests test for RegisterRollToFrame with a 3rd roll to a strike last frame
+    // The next 3 tests test for RegisterRollToFrame with a 3rd roll to a strike last frame
     [TestMethod] // strike last frame, 0 <= 1st, 2nd bonus < 10
     public void RegisterRollToFrame_LastFrameRoll10And3And2_GetsCompleteStrikeFrameWith10And3And2()
     {
@@ -233,7 +233,7 @@ public class FrameTest
         });
     }
 
-    // two helper functions
+    // 2 helper functions
     private void RegisterTwoRollsToFrame(Frame frame, int pins1, int pins2)
     {
         frame.RegisterRollToFrame(pins1);

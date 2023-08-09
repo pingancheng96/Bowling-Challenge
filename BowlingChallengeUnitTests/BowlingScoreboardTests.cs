@@ -9,7 +9,7 @@ public class BowlingScoreboardTest
     private readonly List<int> _exampleRolls = new() { 1, 4, 4, 5, 6, 4, 5, 5, 10, 0, 1, 7, 3, 6, 4, 10, 2, 8, 6 };
 
     // ---------- Part 1: Tests for RegisterRollToBoard
-    // The next two tests test for RegisterRollToBoard with a roll of pins < 0 and > 10.
+    // The next 2 tests test for RegisterRollToBoard with a roll of pins < 0 and > 10.
     [TestMethod]
     public void RegisterRollToBoard_RollNeg1_ThrowsArgumentOutOfRangeException()
     {
@@ -116,8 +116,8 @@ public class BowlingScoreboardTest
     {
         try
         {
-            foreach (var t in _exampleRolls) // a normal game of mixed open, spare, and open frames
-                _bowlingScoreboard.RegisterRollToBoard(t);
+            foreach (int roll in _exampleRolls) // a normal game of mixed open, spare, and open frames
+                _bowlingScoreboard.RegisterRollToBoard(roll);
         }
         catch (Exception e)
         {
@@ -125,7 +125,7 @@ public class BowlingScoreboardTest
         }
     }
 
-    // The next 2 tests test for RegisterRollToBoard of a 1 bonus roll to the last spare frame.
+    // The next test tests for RegisterRollToBoard of a 1 bonus roll to the last spare frame.
     [TestMethod] // spare last frame
     public void RegisterRollToBoard_Rolls0And10And6After9GutterFrames_ThrowsNoException()
     {
@@ -142,7 +142,7 @@ public class BowlingScoreboardTest
         }
     }
 
-    // The next tests test for RegisterRollToBoard of 2 bonus rolls to the last strike frame.
+    // The next 2 tests test for RegisterRollToBoard of 2 bonus rolls to the last strike frame.
     [TestMethod] // strike last frame, 1st bonus = 10
     public void RegisterRollToBoard_Roll10And10And7After9GutterFrames_ThrowsNoException()
     {
@@ -168,7 +168,7 @@ public class BowlingScoreboardTest
         Assert.ThrowsException<ArgumentException>(() => _bowlingScoreboard.RegisterRollToBoard(6));
     }
 
-    // The next two tests test for RegisterRollToBoard of attempting to register a roll to a complete game.
+    // The next 4 tests test for RegisterRollToBoard of attempting to register a roll to a complete game.
     [TestMethod] // 2 rolls per open frame => 20 rolls
     public void RegisterRollToBoard_21stRollToAllOpenFrames_ThrowsArgumentException()
     {
@@ -191,8 +191,8 @@ public class BowlingScoreboardTest
     [TestMethod]
     public void RegisterRollToBoard_ExtraRollToExampleGame_ThrowsArgumentException()
     {
-        foreach (var t in _exampleRolls)  // example game
-            _bowlingScoreboard.RegisterRollToBoard(t);
+        foreach (int roll in _exampleRolls)  // example game
+            _bowlingScoreboard.RegisterRollToBoard(roll);
         Assert.ThrowsException<ArgumentException>(() => _bowlingScoreboard.RegisterRollToBoard(1));
     }
 
@@ -232,7 +232,7 @@ public class BowlingScoreboardTest
         Assert.AreEqual(10, _bowlingScoreboard.GetTotalScore());
     }
 
-    // The next three tests test for GetTotalScore in the middle of the game when a frame score can be determined.
+    // The next 3 tests test for GetTotalScore in the middle of the game when a frame score can be determined.
     [TestMethod] // open non-last frame of 1 and 4
     public void GetTotalScore_Roll1And4After5GutterFrames_Returns5()
     {
@@ -306,7 +306,7 @@ public class BowlingScoreboardTest
         Assert.AreEqual(30, _bowlingScoreboard.GetTotalScore());
     }
 
-    // The next three tests test for GetTotalScore of a gutter, perfect, and the example game.
+    // The next 3 tests test for GetTotalScore of a gutter, perfect, and the example game.
     [TestMethod]
     public void GetTotalScore_GutterGame_Returns0()
     {
@@ -324,8 +324,8 @@ public class BowlingScoreboardTest
     [TestMethod]
     public void GetTotalScore_ExampleGame_Returns133()
     {
-        foreach (var t in _exampleRolls) // example game
-            _bowlingScoreboard.RegisterRollToBoard(t);
+        foreach (int roll in _exampleRolls) // example game
+            _bowlingScoreboard.RegisterRollToBoard(roll);
 
         Assert.AreEqual(133, _bowlingScoreboard.GetTotalScore());
     }
@@ -338,7 +338,7 @@ public class BowlingScoreboardTest
         Assert.AreEqual("", _bowlingScoreboard.ToString());
     }
 
-    // The next 3 tests test for ToString in the middle of the game when a frame score cannot be determined.
+    // The next 4 tests test for ToString in the middle of the game when a frame score cannot be determined.
     [TestMethod] // non-last frame with one roll of 1
     public void ToString_Roll1After4GutterFrames_ReturnsCorrespondingGameString()
     {
@@ -576,8 +576,8 @@ public class BowlingScoreboardTest
     [TestMethod]
     public void ToString_ExampleGame_ReturnExampleGameString()
     {
-        foreach (var t in _exampleRolls)
-            _bowlingScoreboard.RegisterRollToBoard(t);
+        foreach (int roll in _exampleRolls)
+            _bowlingScoreboard.RegisterRollToBoard(roll);
 
         string exampleGameString = "";
         exampleGameString += $"Frame: {1,3}\t Result: {1,3} {4,3}\t Cumulative Frame Score: {5,3}\n";
