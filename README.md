@@ -44,7 +44,7 @@ It has the following two private fields:
 * `private readonly List<int> _frameRolls`: the rolls this frame consists of.
 * `private readonly bool _isLastFrame`: indicating if the frame is the last frame of a game.
 
-We will allow reading the data in `_frameRolls`, but not setting, so we wrap `_frameRolls` in a `ReadOnlyCollection<int>`.
+We would like the scoreboard to be able to read the data in `_frameRolls`, but not setting, so we wrap `_frameRolls` in a `ReadOnlyCollection<int>` with a public getter.
 
 * `public ReadOnlyCollection<int> FrameRolls => _frameRolls.AsReadOnly();`
 
