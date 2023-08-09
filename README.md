@@ -34,13 +34,21 @@ We now provide a bit more details of the two main classes we design.
 
 The `Frame` class encapsulates the logic of actually registering a roll to a frame, which includes validating the roll data, adding the roll to the list of rolls this frame consists of, updating the frame type, and deciding if this frame is complete.
 
-It consits of the following properties with public getters:
+It consits of the following properties with public getter and private setter:
 
 * `public bool IsComplete`: indicating if the current frame is complete.
-* `public List<int> FrameRolls`: the rolls this frame consists of.
 * `public FrameType FrameType`: the type of this frame, which can be `FrameType.Strike`,  `FrameType.Spare`, or `FrameType.Open`.
 
-It provides the following public method for `BowlingScoreboard` to invoke.
+It has the following two private fields:
+
+* `private readonly List<int> _frameRolls`: the rolls this frame consists of.
+* `private readonly bool _isLastFrame`: indicating if the frame is the last frame of a game.
+
+We will allow reading the data in `_frameRolls`, but not setting, so we wrap `_frameRolls` in a `ReadOnlyCollection<int>`.
+
+* `public ReadOnlyCollection<int> FrameRolls => _frameRolls.AsReadOnly();`
+
+It also provides the following public method for `BowlingScoreboard` to invoke.
 
 * `public void RegisterRollToFrame(int pins, bool isLastFrame)`: register a roll to the frame, which includes adding the roll to `FrameRolls`, and potentially updating `IsComplete` and `FrameType` of the frame.
 
