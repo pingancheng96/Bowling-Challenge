@@ -5,7 +5,7 @@ In this coding task, we are to design a scoreboard for [ten-pin bowling]( https:
 * Each game consists of ten frames. In each frame, a player has two opportunities (rolls) to knock down all the ten pins.
 * In each frame, if a player knocks down all the pins with the **first** (resp. **second**) roll, then this is a **strike** (resp. **spare**) frame. Otherwise, it is an **open** frame.
 * If the last frame is a **strike** (resp. **spare**), the player has **two** (resp. **one**) more bonus rolls.
-* The score of a **strike** (resp. **spare**) frame equals the pins knocked down in the current frame (i.e. $10$) plus that in the next **two** (resp. **one**) rolls.  The score of an **open** frame is the number of pins knocked down in that frame.
+* The score of a **strike** (resp. **spare**) frame equals the number of pins knocked down in the current frame (i.e. $10$) plus that in the next **two** (resp. **one**) rolls.  The score of an **open** frame is the total number of pins knocked down in that frame.
 * The final score is the sum of the score of all frames.
 
 ## 2 Design of the Scoreboard
@@ -74,7 +74,7 @@ It exposes the following three methods for driver programs to invoke:
 
 We ignore the details of private methods in `BowlingScoreboard` that are used to update `_cmlFrameScores` and formatting the output.
 
-### 2.3 Example Output and Unit Tests
+## 3 Example Output and Unit Tests
 
 We run the follwing simple examples to demonstrate the use of the system.
 
@@ -86,24 +86,27 @@ using BowlingChallenge;
 BowlingScoreboard bowlingScoreboard = new BowlingScoreboard();
 
 // example game
+Console.WriteLine("Example Game:");
 List<int> exampleRolls = new() { 1, 4, 4, 5, 6, 4, 5, 5, 10, 0, 1, 7, 3, 6, 4, 10, 2, 8, 6 };
 foreach (int roll in exampleRolls)
     bowlingScoreboard.RegisterRollToBoard(roll);
-Console.WriteLine(bowlingScoreboard.ToString());
+Console.Write(bowlingScoreboard.ToString());
 Console.WriteLine($"Total Score: {bowlingScoreboard.GetTotalScore()}\n");
 
 bowlingScoreboard.ClearScoreboard();
 
 // gutter game
+Console.WriteLine("Gutter Game:");
 RegisterRepeatedRolls(0, 20);
-Console.WriteLine(bowlingScoreboard.ToString());
+Console.Write(bowlingScoreboard.ToString());
 Console.WriteLine($"Total Score: {bowlingScoreboard.GetTotalScore()}\n");
 
 bowlingScoreboard.ClearScoreboard();
 
 // perfect game
+Console.WriteLine("Perfect Game:");
 RegisterRepeatedRolls(10, 12);
-Console.WriteLine(bowlingScoreboard.ToString());
+Console.Write(bowlingScoreboard.ToString());
 Console.WriteLine($"Total Score: {bowlingScoreboard.GetTotalScore()}\n");
 
 void RegisterRepeatedRolls(int pins, int rolls)
@@ -111,12 +114,14 @@ void RegisterRepeatedRolls(int pins, int rolls)
     for (int i = 0; i < rolls; ++i)
         bowlingScoreboard.RegisterRollToBoard(pins);
 }
+
 ```
 
 We get the following output.
 
 ```bash
 % dotnet run Program.cs
+Example Game:
 Frame:   1       Result:   1   4         Cumulative Frame Score:   5
 Frame:   2       Result:   4   5         Cumulative Frame Score:  14
 Frame:   3       Result:   6   /         Cumulative Frame Score:  29
@@ -127,9 +132,9 @@ Frame:   7       Result:   7   /         Cumulative Frame Score:  77
 Frame:   8       Result:   6   /         Cumulative Frame Score:  97
 Frame:   9       Result:   X             Cumulative Frame Score: 117
 Frame:  10       Result:   2   /   6     Cumulative Frame Score: 133
-
 Total Score: 133
 
+Gutter Game:
 Frame:   1       Result:   0   0         Cumulative Frame Score:   0
 Frame:   2       Result:   0   0         Cumulative Frame Score:   0
 Frame:   3       Result:   0   0         Cumulative Frame Score:   0
@@ -140,9 +145,9 @@ Frame:   7       Result:   0   0         Cumulative Frame Score:   0
 Frame:   8       Result:   0   0         Cumulative Frame Score:   0
 Frame:   9       Result:   0   0         Cumulative Frame Score:   0
 Frame:  10       Result:   0   0         Cumulative Frame Score:   0
-
 Total Score: 0
 
+Perfect Game:
 Frame:   1       Result:   X             Cumulative Frame Score:  30
 Frame:   2       Result:   X             Cumulative Frame Score:  60
 Frame:   3       Result:   X             Cumulative Frame Score:  90
@@ -153,7 +158,6 @@ Frame:   7       Result:   X             Cumulative Frame Score: 210
 Frame:   8       Result:   X             Cumulative Frame Score: 240
 Frame:   9       Result:   X             Cumulative Frame Score: 270
 Frame:  10       Result:   X   X   X     Cumulative Frame Score: 300
-
 Total Score: 300
 
 ```
