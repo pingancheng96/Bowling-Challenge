@@ -52,8 +52,8 @@ public class BowlingScoreboard
 
     public void ClearScoreboard()
     {
-        _frames = new();
-        _cmlFrameScores = new();
+        _frames = new List<Frame>();
+        _cmlFrameScores = new List<int>();
         _frames.Add(new Frame(_frames.Count == MaxFrames - 1));
     }
 
