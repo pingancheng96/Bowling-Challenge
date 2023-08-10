@@ -64,7 +64,7 @@ public class BowlingScoreboardTest
     {
         try
         {
-            GenerateGutterFrames(10);
+            RegisterGutterFramesToBoard(10);
         }
         catch (Exception e)
         {
@@ -77,7 +77,7 @@ public class BowlingScoreboardTest
     {
         try
         {
-            RegisterSameRollsToBoard(1, 20); // 10 frames of 1's
+            RegisterRepeatedRollsToBoard(1, 20); // 10 frames of 1's
         }
         catch (Exception e)
         {
@@ -90,7 +90,7 @@ public class BowlingScoreboardTest
     {
         try
         {
-            RegisterSameRollsToBoard(5, 21); // 10 frames of 5's and a bonus roll of 5
+            RegisterRepeatedRollsToBoard(5, 21); // 10 frames of 5's and a bonus roll of 5
         }
         catch (Exception e)
         {
@@ -103,7 +103,7 @@ public class BowlingScoreboardTest
     {
         try
         {
-            RegisterSameRollsToBoard(10, 12); // 10 frames of 10's and 2 bonus rolls of 10's
+            RegisterRepeatedRollsToBoard(10, 12); // 10 frames of 10's and 2 bonus rolls of 10's
         }
         catch (Exception e)
         {
@@ -129,7 +129,7 @@ public class BowlingScoreboardTest
     [TestMethod] // spare last frame
     public void RegisterRollToBoard_Rolls0And10And6After9GutterFrames_ThrowsNoException()
     {
-        GenerateGutterFrames(9);
+        RegisterGutterFramesToBoard(9);
         RegisterTwoRollsToBoard(0, 10); // last frame spare
 
         try
@@ -146,7 +146,7 @@ public class BowlingScoreboardTest
     [TestMethod] // strike last frame, 1st bonus = 10
     public void RegisterRollToBoard_Roll10And10And7After9GutterFrames_ThrowsNoException()
     {
-        GenerateGutterFrames(9);
+        RegisterGutterFramesToBoard(9);
         RegisterTwoRollsToBoard(10, 10); // last frame starts with two 10's
 
         try
@@ -162,7 +162,7 @@ public class BowlingScoreboardTest
     [TestMethod] // strike last frame 1st bonus != 10, 1st bonus + 2nd bonus > 10 illegal
     public void RegisterRollToBoard_Roll10And5And6After9GutterFrames_ThrowsArgumentException()
     {
-        GenerateGutterFrames(9);
+        RegisterGutterFramesToBoard(9);
         RegisterTwoRollsToBoard(10, 5); // last frame strike
 
         Assert.ThrowsException<ArgumentException>(() => _bowlingScoreboard.RegisterRollToBoard(6));
@@ -173,19 +173,19 @@ public class BowlingScoreboardTest
     public void RegisterRollToBoard_21stRollToAllOpenFrames_ThrowsArgumentException()
     {
 
-        Assert.ThrowsException<ArgumentException>(() => RegisterSameRollsToBoard(1, 21));
+        Assert.ThrowsException<ArgumentException>(() => RegisterRepeatedRollsToBoard(1, 21));
     }
 
     [TestMethod] // 2 rolls per spare frame + 1 bonus roll last frame => 21 rolls 
     public void RegisterRollToBoard_22ndRollToAllSpareFrames_ThrowsArgumentException()
     {
-        Assert.ThrowsException<ArgumentException>(() => RegisterSameRollsToBoard(5, 22));
+        Assert.ThrowsException<ArgumentException>(() => RegisterRepeatedRollsToBoard(5, 22));
     }
 
     [TestMethod] // 1 roll per strike frame + 2 bonus rolls last frame => 12 rolls
     public void RegisterRollToBoard_13thRollToAllStrikeFrames_ThrowsArgumentException()
     {
-        Assert.ThrowsException<ArgumentException>(() => RegisterSameRollsToBoard(10, 13));
+        Assert.ThrowsException<ArgumentException>(() => RegisterRepeatedRollsToBoard(10, 13));
     }
 
     [TestMethod]
@@ -208,7 +208,7 @@ public class BowlingScoreboardTest
     [TestMethod] // non-strike frame with one roll of 1
     public void GetTotalScore_Roll1After5GutterFrames_Returns1()
     {
-        GenerateGutterFrames(5);
+        RegisterGutterFramesToBoard(5);
         _bowlingScoreboard.RegisterRollToBoard(1);
 
         Assert.AreEqual(1, _bowlingScoreboard.GetTotalScore());
@@ -217,7 +217,7 @@ public class BowlingScoreboardTest
     [TestMethod] // spare non-last frame, bonus unknown
     public void GetTotalScore_Roll2And8After5GutterFrames_Returns10()
     {
-        GenerateGutterFrames(5);
+        RegisterGutterFramesToBoard(5);
         RegisterTwoRollsToBoard(2, 8); // spare frame
 
         Assert.AreEqual(10, _bowlingScoreboard.GetTotalScore());
@@ -226,7 +226,7 @@ public class BowlingScoreboardTest
     [TestMethod] // strike non-last frame, bonus unknown
     public void GetTotalScore_Roll10After5GutterFrames_Returns10()
     {
-        GenerateGutterFrames(5);
+        RegisterGutterFramesToBoard(5);
         _bowlingScoreboard.RegisterRollToBoard(10); // strike frame
 
         Assert.AreEqual(10, _bowlingScoreboard.GetTotalScore());
@@ -236,7 +236,7 @@ public class BowlingScoreboardTest
     [TestMethod] // open non-last frame of 1 and 4
     public void GetTotalScore_Roll1And4After5GutterFrames_Returns5()
     {
-        GenerateGutterFrames(5);
+        RegisterGutterFramesToBoard(5);
         RegisterTwoRollsToBoard(1, 4); // open frame
 
         Assert.AreEqual(5, _bowlingScoreboard.GetTotalScore());
@@ -245,7 +245,7 @@ public class BowlingScoreboardTest
     [TestMethod] // spare non-last frame, bonus 2
     public void GetTotalScore_Roll6And4And2After5GutterFrames_Returns14()
     {
-        GenerateGutterFrames(5);
+        RegisterGutterFramesToBoard(5);
         RegisterThreeRollsToBoard(6, 4, 2); // spare frame (score 12) + open frame (score 2)
 
         Assert.AreEqual(14, _bowlingScoreboard.GetTotalScore());
@@ -254,7 +254,7 @@ public class BowlingScoreboardTest
     [TestMethod] // strike non-last frame, bonus 0 and 5
     public void GetTotalScore_Roll10And0And5After5GutterFrames_Returns20()
     {
-        GenerateGutterFrames(5);
+        RegisterGutterFramesToBoard(5);
         RegisterThreeRollsToBoard(10, 0, 5); // strike frame (score 15) + open frame (score 5)
 
         Assert.AreEqual(20, _bowlingScoreboard.GetTotalScore());
@@ -264,8 +264,8 @@ public class BowlingScoreboardTest
     [TestMethod] // open last frame of 1 and 1
     public void GetTotalScore_Roll1And1After9GutterFrames_Returns2()
     {
-        GenerateGutterFrames(9);
-        RegisterSameRollsToBoard(1, 2); // open last frame
+        RegisterGutterFramesToBoard(9);
+        RegisterRepeatedRollsToBoard(1, 2); // open last frame
 
         Assert.AreEqual(2, _bowlingScoreboard.GetTotalScore());
     }
@@ -273,8 +273,8 @@ public class BowlingScoreboardTest
     [TestMethod] // spare last frame, bonus 5
     public void GetTotalScore_Roll5And5And5After9GutterFrames_Returns15()
     {
-        GenerateGutterFrames(9);
-        RegisterSameRollsToBoard(5, 3); // spare last frame
+        RegisterGutterFramesToBoard(9);
+        RegisterRepeatedRollsToBoard(5, 3); // spare last frame
 
         Assert.AreEqual(15, _bowlingScoreboard.GetTotalScore());
     }
@@ -282,7 +282,7 @@ public class BowlingScoreboardTest
     [TestMethod] // strike last frame, bonus 5 and 5
     public void GetTotalScore_Roll10And5And5After9GutterFrames_Returns20()
     {
-        GenerateGutterFrames(9);
+        RegisterGutterFramesToBoard(9);
         RegisterThreeRollsToBoard(10, 5, 5); // strike last frame
 
         Assert.AreEqual(20, _bowlingScoreboard.GetTotalScore());
@@ -291,7 +291,7 @@ public class BowlingScoreboardTest
     [TestMethod] // strike last frame, bonus 10 and 5
     public void GetTotalScore_Roll10And10And5After9GutterFrames_Returns25()
     {
-        GenerateGutterFrames(9);
+        RegisterGutterFramesToBoard(9);
         RegisterThreeRollsToBoard(10, 10, 5); // strike last frame
 
         Assert.AreEqual(25, _bowlingScoreboard.GetTotalScore());
@@ -300,7 +300,7 @@ public class BowlingScoreboardTest
     [TestMethod] // strike last frame, bonus 10 and 10
     public void GetTotalScore_Roll10And10And10After9GutterFrames_Returns30()
     {
-        GenerateGutterFrames(9);
+        RegisterGutterFramesToBoard(9);
         RegisterThreeRollsToBoard(10, 10, 10); // strike last frame
 
         Assert.AreEqual(30, _bowlingScoreboard.GetTotalScore());
@@ -310,14 +310,14 @@ public class BowlingScoreboardTest
     [TestMethod]
     public void GetTotalScore_GutterGame_Returns0()
     {
-        GenerateGutterFrames(10);
+        RegisterGutterFramesToBoard(10);
         Assert.AreEqual(0, _bowlingScoreboard.GetTotalScore());
     }
 
     [TestMethod]
     public void GetTotalScore_PerfectGame_Returns300()
     {
-        RegisterSameRollsToBoard(10, 12); // 10 frames of 10's and 2 bonus rolls of 10 pins each
+        RegisterRepeatedRollsToBoard(10, 12); // 10 frames of 10's and 2 bonus rolls of 10 pins each
         Assert.AreEqual(300, _bowlingScoreboard.GetTotalScore());
     }
 
@@ -342,10 +342,10 @@ public class BowlingScoreboardTest
     [TestMethod] // non-last frame with one roll of 1
     public void ToString_Roll1After4GutterFrames_ReturnsCorrespondingGameString()
     {
-        GenerateGutterFrames(4);
+        RegisterGutterFramesToBoard(4);
         _bowlingScoreboard.RegisterRollToBoard(1); // a single 1 in 5th frame
 
-        string expectedStr = GenerateGutterFramesString(4); // string of 4 gutter frames
+        string expectedStr = GetGutterFramesString(4); // string of 4 gutter frames
         expectedStr += $"Frame: {5,3}\t Result: {1,3}\t\t Cumulative Frame Score: {"",3}\n"; // string of a single 1 in 5th frame
 
         Assert.AreEqual(expectedStr, _bowlingScoreboard.ToString());
@@ -354,10 +354,10 @@ public class BowlingScoreboardTest
     [TestMethod] // spare non-last frame, bonus unknown 
     public void ToString_Roll1And9After4GutterFrames_ReturnsCorrespondingGameString()
     {
-        GenerateGutterFrames(4);
+        RegisterGutterFramesToBoard(4);
         RegisterTwoRollsToBoard(1, 9); // spare 5th frame of 1 and 9
 
-        string expectedStr = GenerateGutterFramesString(4);
+        string expectedStr = GetGutterFramesString(4);
         expectedStr += $"Frame: {5,3}\t Result: {1,3} {'/',3}\t Cumulative Frame Score: {"",3}\n";
 
         Assert.AreEqual(expectedStr, _bowlingScoreboard.ToString());
@@ -366,10 +366,10 @@ public class BowlingScoreboardTest
     [TestMethod] // spare non-last frame, 2nd roll = 10, bonus unknown 
     public void ToString_Roll0And10After4GutterFrames_ReturnsCorrespondingGameString()
     {
-        GenerateGutterFrames(4);
+        RegisterGutterFramesToBoard(4);
         RegisterTwoRollsToBoard(0, 10); // spare 5th frame of 0 and 10
 
-        string expectedStr = GenerateGutterFramesString(4);
+        string expectedStr = GetGutterFramesString(4);
         expectedStr += $"Frame: {5,3}\t Result: {0,3} {'/',3}\t Cumulative Frame Score: {"",3}\n";
 
         Assert.AreEqual(expectedStr, _bowlingScoreboard.ToString());
@@ -378,10 +378,10 @@ public class BowlingScoreboardTest
     [TestMethod] // strike non-last frame, bonus unknown 
     public void ToString_Roll10After4GutterFrames_ReturnsCorrespondingGameString()
     {
-        GenerateGutterFrames(4);
+        RegisterGutterFramesToBoard(4);
         _bowlingScoreboard.RegisterRollToBoard(10); // a strike 5th frame
 
-        string expectedStr = GenerateGutterFramesString(4);
+        string expectedStr = GetGutterFramesString(4);
         expectedStr += $"Frame: {5,3}\t Result: {"X",3}\t\t Cumulative Frame Score: {"",3}\n";
 
         Assert.AreEqual(expectedStr, _bowlingScoreboard.ToString());
@@ -391,10 +391,10 @@ public class BowlingScoreboardTest
     [TestMethod] // open frame of 1 and 4
     public void ToString_Roll1And4After4GutterFrames_ReturnsCorrespondingGameString()
     {
-        GenerateGutterFrames(4);
+        RegisterGutterFramesToBoard(4);
         RegisterTwoRollsToBoard(1, 4);
 
-        string expectedStr = GenerateGutterFramesString(4);
+        string expectedStr = GetGutterFramesString(4);
         expectedStr += $"Frame: {5,3}\t Result: {1,3} {4,3}\t Cumulative Frame Score: {5,3}\n";
 
         Assert.AreEqual(expectedStr, _bowlingScoreboard.ToString());
@@ -403,10 +403,10 @@ public class BowlingScoreboardTest
     [TestMethod] // spare non-last frame, bonus 5
     public void ToString_Roll2And8And5After4GutterFrames_ReturnsCorrespondingGameString()
     {
-        GenerateGutterFrames(4);
+        RegisterGutterFramesToBoard(4);
         RegisterThreeRollsToBoard(2, 8, 5);
 
-        string expectedStr = GenerateGutterFramesString(4);
+        string expectedStr = GetGutterFramesString(4);
         expectedStr += $"Frame: {5,3}\t Result: {2,3} {'/',3}\t Cumulative Frame Score: {15,3}\n";
         expectedStr += $"Frame: {6,3}\t Result: {5,3}\t\t Cumulative Frame Score: {"",3}\n";
 
@@ -416,10 +416,10 @@ public class BowlingScoreboardTest
     [TestMethod] // spare non-last frame, 2nd roll = 10, bonus 6
     public void ToString_Roll0And10And6After4GutterFrames_ReturnsCorrespondingGameString()
     {
-        GenerateGutterFrames(4);
+        RegisterGutterFramesToBoard(4);
         RegisterThreeRollsToBoard(0, 10, 6);
 
-        string expectedStr = GenerateGutterFramesString(4);
+        string expectedStr = GetGutterFramesString(4);
         expectedStr += $"Frame: {5,3}\t Result: {0,3} {'/',3}\t Cumulative Frame Score: {16,3}\n";
         expectedStr += $"Frame: {6,3}\t Result: {6,3}\t\t Cumulative Frame Score: {"",3}\n";
 
@@ -429,10 +429,10 @@ public class BowlingScoreboardTest
     [TestMethod] // strike non-last frame, bonus 0 and 9
     public void ToString_Roll10And0And9After4GutterFrames_ReturnsCorrespondingGameString()
     {
-        GenerateGutterFrames(4);
+        RegisterGutterFramesToBoard(4);
         RegisterThreeRollsToBoard(10, 0, 9);
 
-        string expectedStr = GenerateGutterFramesString(4);
+        string expectedStr = GetGutterFramesString(4);
         expectedStr += $"Frame: {5,3}\t Result: {'X',3}\t\t Cumulative Frame Score: {19,3}\n";
         expectedStr += $"Frame: {6,3}\t Result: {0,3} {9,3}\t Cumulative Frame Score: {28,3}\n";
 
@@ -443,10 +443,10 @@ public class BowlingScoreboardTest
     [TestMethod] // open last frame of 3 and 4
     public void ToString_Roll3And4After9GutterFrames_ReturnsCorrespondingGameString()
     {
-        GenerateGutterFrames(9);
+        RegisterGutterFramesToBoard(9);
         RegisterTwoRollsToBoard(3, 4);
 
-        string expectedStr = GenerateGutterFramesString(9);
+        string expectedStr = GetGutterFramesString(9);
         expectedStr += $"Frame: {10,3}\t Result: {3,3} {4,3}\t Cumulative Frame Score: {7,3}\n";
 
         Assert.AreEqual(expectedStr, _bowlingScoreboard.ToString());
@@ -456,10 +456,10 @@ public class BowlingScoreboardTest
     [TestMethod] // spare last frame, 2nd roll = 10, bonus 0
     public void ToString_Roll0And10And0After9GutterFrames_ReturnsCorrespondingGameString()
     {
-        GenerateGutterFrames(9);
+        RegisterGutterFramesToBoard(9);
         RegisterThreeRollsToBoard(0, 10, 0);
 
-        string expectedStr = GenerateGutterFramesString(9);
+        string expectedStr = GetGutterFramesString(9);
         expectedStr += $"Frame: {10,3}\t Result: {0,3} {'/',3} {0,3}\t Cumulative Frame Score: {10,3}\n";
 
         Assert.AreEqual(expectedStr, _bowlingScoreboard.ToString());
@@ -468,10 +468,10 @@ public class BowlingScoreboardTest
     [TestMethod] // spare last frame, bonus 6
     public void ToString_Roll3And7And6After9GutterFrames_ReturnsCorrespondingGameString()
     {
-        GenerateGutterFrames(9);
+        RegisterGutterFramesToBoard(9);
         RegisterThreeRollsToBoard(3, 7, 6);
 
-        string expectedStr = GenerateGutterFramesString(9);
+        string expectedStr = GetGutterFramesString(9);
         expectedStr += $"Frame: {10,3}\t Result: {3,3} {'/',3} {6,3}\t Cumulative Frame Score: {16,3}\n";
 
         Assert.AreEqual(expectedStr, _bowlingScoreboard.ToString());
@@ -480,10 +480,10 @@ public class BowlingScoreboardTest
     [TestMethod] // spare last frame, 2nd roll = 10, bonus 10
     public void ToString_Roll0And10And10After9GutterFrames_ReturnsCorrespondingGameString()
     {
-        GenerateGutterFrames(9);
+        RegisterGutterFramesToBoard(9);
         RegisterThreeRollsToBoard(0, 10, 10);
 
-        string expectedStr = GenerateGutterFramesString(9);
+        string expectedStr = GetGutterFramesString(9);
         expectedStr += $"Frame: {10,3}\t Result: {0,3} {'/',3} {'X',3}\t Cumulative Frame Score: {20,3}\n";
 
         Assert.AreEqual(expectedStr, _bowlingScoreboard.ToString());
@@ -493,10 +493,10 @@ public class BowlingScoreboardTest
     [TestMethod] // strike last frame, bonus 0 and 0
     public void ToString_Roll10And0And0After9GutterFrames_ReturnsCorrespondingGameString()
     {
-        GenerateGutterFrames(9);
+        RegisterGutterFramesToBoard(9);
         RegisterThreeRollsToBoard(10, 0, 0);
 
-        string expectedStr = GenerateGutterFramesString(9);
+        string expectedStr = GetGutterFramesString(9);
         expectedStr += $"Frame: {10,3}\t Result: {'X',3} {0,3} {0,3}\t Cumulative Frame Score: {10,3}\n";
 
         Assert.AreEqual(expectedStr, _bowlingScoreboard.ToString());
@@ -505,10 +505,10 @@ public class BowlingScoreboardTest
     [TestMethod] // strike last frame, bonus 10 and 0
     public void ToString_Roll10And10And0After9GutterFrames_ReturnsCorrespondingGameString()
     {
-        GenerateGutterFrames(9);
+        RegisterGutterFramesToBoard(9);
         RegisterThreeRollsToBoard(10, 10, 0);
 
-        string expectedStr = GenerateGutterFramesString(9);
+        string expectedStr = GetGutterFramesString(9);
         expectedStr += $"Frame: {10,3}\t Result: {'X',3} {'X',3} {0,3}\t Cumulative Frame Score: {20,3}\n";
 
         Assert.AreEqual(expectedStr, _bowlingScoreboard.ToString());
@@ -517,10 +517,10 @@ public class BowlingScoreboardTest
     [TestMethod] // strike last frame, bonus 0 and 10
     public void ToString_Roll10And0And10After9GutterFrames_ReturnsCorrespondingGameString()
     {
-        GenerateGutterFrames(9);
+        RegisterGutterFramesToBoard(9);
         RegisterThreeRollsToBoard(10, 0, 10);
 
-        string expectedStr = GenerateGutterFramesString(9);
+        string expectedStr = GetGutterFramesString(9);
         expectedStr += $"Frame: {10,3}\t Result: {'X',3} {0,3} {'/',3}\t Cumulative Frame Score: {20,3}\n";
 
         Assert.AreEqual(expectedStr, _bowlingScoreboard.ToString());
@@ -529,10 +529,10 @@ public class BowlingScoreboardTest
     [TestMethod] // strike last frame, bonus 10 and 10
     public void ToString_Roll10And10And10After9GutterFrames_ReturnsCorrespondingGameString()
     {
-        GenerateGutterFrames(9);
+        RegisterGutterFramesToBoard(9);
         RegisterThreeRollsToBoard(10, 10, 10);
 
-        string expectedStr = GenerateGutterFramesString(9);
+        string expectedStr = GetGutterFramesString(9);
         expectedStr += $"Frame: {10,3}\t Result: {'X',3} {'X',3} {'X',3}\t Cumulative Frame Score: {30,3}\n";
 
         Assert.AreEqual(expectedStr, _bowlingScoreboard.ToString());
@@ -541,10 +541,10 @@ public class BowlingScoreboardTest
     [TestMethod] // strike last frame, bonus 5 and 5
     public void ToString_Roll10And5And5After9GutterFrames_ReturnsCorrespondingGameString()
     {
-        GenerateGutterFrames(9);
+        RegisterGutterFramesToBoard(9);
         RegisterThreeRollsToBoard(10, 5, 5);
 
-        string expectedStr = GenerateGutterFramesString(9);
+        string expectedStr = GetGutterFramesString(9);
         expectedStr += $"Frame: {10,3}\t Result: {'X',3} {5,3} {'/',3}\t Cumulative Frame Score: {20,3}\n";
 
         Assert.AreEqual(expectedStr, _bowlingScoreboard.ToString());
@@ -554,8 +554,8 @@ public class BowlingScoreboardTest
     [TestMethod]
     public void ToString_GutterGame_ReturnsGutterGameString()
     {
-        GenerateGutterFrames(10);
-        string gutterGameString = GenerateGutterFramesString(10);
+        RegisterGutterFramesToBoard(10);
+        string gutterGameString = GetGutterFramesString(10);
 
         Assert.AreEqual(gutterGameString, _bowlingScoreboard.ToString());
     }
@@ -563,7 +563,7 @@ public class BowlingScoreboardTest
     [TestMethod]
     public void ToString_PerfectGame_ReturnsPerfectGameString()
     {
-        RegisterSameRollsToBoard(10, 12);
+        RegisterRepeatedRollsToBoard(10, 12);
 
         string perfectGameString = "";
         for (int i = 0; i < 9; ++i)
@@ -595,15 +595,15 @@ public class BowlingScoreboardTest
     }
 
     // a couple of helper functions
-    private void RegisterSameRollsToBoard(int pins, int rolls)
+    private void RegisterRepeatedRollsToBoard(int pins, int rolls)
     {
         for (int i = 0; i < rolls; ++i)
             _bowlingScoreboard.RegisterRollToBoard(pins);
     }
 
-    private void GenerateGutterFrames(int frames)
+    private void RegisterGutterFramesToBoard(int frames)
     {
-        RegisterSameRollsToBoard(0, frames * 2);
+        RegisterRepeatedRollsToBoard(0, frames * 2);
     }
 
     private void RegisterTwoRollsToBoard(int pins1, int pins2)
@@ -619,7 +619,7 @@ public class BowlingScoreboardTest
         _bowlingScoreboard.RegisterRollToBoard(pins3);
     }
 
-    private string GenerateGutterFramesString(int frames)
+    private string GetGutterFramesString(int frames)
     {
         string displayString = "";
         for (int i = 0; i < frames; ++i)

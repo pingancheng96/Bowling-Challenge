@@ -7,7 +7,7 @@ public class BowlingScoreboard
 {
     private const int MaxFrames = 10; // max number of frames in a game, in this case 10
     private List<Frame> _frames = new(); // record all frames in a game
-    private List<int> _cmlFrameScores = new(); // record cumulative frame scores
+    private List<int> _cmlFrameScores = new(); // record all cumulative frame scores
 
     public BowlingScoreboard()
     {
@@ -68,20 +68,20 @@ public class BowlingScoreboard
         for (int i = 0; i < _frames.Count; ++i)
         {
             Frame frameToDisplay = _frames[i];
-            int? displayScore = i < _cmlFrameScores.Count ? _cmlFrameScores[i] : null;
+            int? cmlFrameScore = i < _cmlFrameScores.Count ? _cmlFrameScores[i] : null;
             switch (frameToDisplay.FrameRolls.Count)
             {
                 case 1:
                     displayString += string.Format("Frame: {0, 3}\t Result: {1, 3}\t\t Cumulative Frame Score: {2, 3}\n",
-                        i + 1, GetRollDisplayString(frameToDisplay, 0), displayScore);
+                        i + 1, GetRollDisplayString(frameToDisplay, 0), cmlFrameScore);
                     break;
                 case 2:
                     displayString += string.Format("Frame: {0, 3}\t Result: {1, 3} {2, 3}\t Cumulative Frame Score: {3, 3}\n",
-                        i + 1, GetRollDisplayString(frameToDisplay, 0), GetRollDisplayString(frameToDisplay, 1), displayScore);
+                        i + 1, GetRollDisplayString(frameToDisplay, 0), GetRollDisplayString(frameToDisplay, 1), cmlFrameScore);
                     break;
                 case 3:
                     displayString += string.Format("Frame: {0, 3}\t Result: {1, 3} {2, 3} {3, 3}\t Cumulative Frame Score: {4, 3}\n",
-                        i + 1, GetRollDisplayString(frameToDisplay, 0), GetRollDisplayString(frameToDisplay, 1), GetRollDisplayString(frameToDisplay, 2), displayScore);
+                        i + 1, GetRollDisplayString(frameToDisplay, 0), GetRollDisplayString(frameToDisplay, 1), GetRollDisplayString(frameToDisplay, 2), cmlFrameScore);
                     break;
             }
         }
@@ -104,15 +104,15 @@ public class BowlingScoreboard
     {
         int frameToEvalIdx = _cmlFrameScores.Count; // index of the frame to evaluate score
         Frame frameToEval = _frames[frameToEvalIdx];
-        int curSum = _cmlFrameScores.Count == 0 ? 0 : _cmlFrameScores.Last();
+        int curCmlFrameScore = _cmlFrameScores.Count == 0 ? 0 : _cmlFrameScores.Last();
 
-        // if frame not complete, do not need to update score
+        // if frame incomplete, not need to update score
         if (!frameToEval.IsComplete) return;
 
         // if open frame or the last frame, frame score is the sum of pins knocked down in that frame
         if (frameToEval.FrameType == FrameType.Open || frameToEvalIdx == MaxFrames - 1)
         {
-            _cmlFrameScores.Add(curSum + _frames[frameToEvalIdx].FrameRolls.Sum());
+            _cmlFrameScores.Add(curCmlFrameScore + _frames[frameToEvalIdx].FrameRolls.Sum());
             return; // in both cases no need to recurse
         }
 
@@ -128,7 +128,7 @@ public class BowlingScoreboard
                 break;
         }
         if (frameScore == null) return; // bonus rolls not thrown yet, just return
-        _cmlFrameScores.Add(curSum + (int)frameScore);
+        _cmlFrameScores.Add(curCmlFrameScore + (int)frameScore);
 
         // cascading update if there are frames left
         if (_cmlFrameScores.Count < _frames.Count)

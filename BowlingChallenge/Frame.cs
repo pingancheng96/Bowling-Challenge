@@ -3,7 +3,7 @@
 namespace BowlingChallenge;
 
 /// <summary>
-/// Class <c>Frame</c> models a frame in a blowing game.
+/// Class <c>Frame</c> models a frame in a ten-pin blowing game.
 /// </summary>
 public class Frame
 {

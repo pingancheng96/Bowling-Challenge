@@ -32,17 +32,17 @@ We now provide a bit more details of the two main classes we design.
 
 #### 2.2.1 The `Frame` Class
 
-The `Frame` class encapsulates the logic of actually registering a roll to a frame, which includes validating the roll data, adding the roll to the list of rolls this frame consists of, updating the frame type, and deciding if this frame is complete.
+The `Frame` class encapsulates the frame-specific information and the logic of actually registering a roll to a frame, which includes validating the roll data, adding the roll to the list of rolls this frame consists of, updating the frame type, and deciding if this frame is complete.
 
-It consits of the following two properties with public getter and private setter:
+It has the following two properties with public getter and private setter:
 
 * `public bool IsComplete`: indicating if the current frame is complete.
 * `public FrameType FrameType`: the type of this frame, which can be `FrameType.Strike`,  `FrameType.Spare`, or `FrameType.Open`.
 
-It has the following two private fields:
+It also has the following two private fields:
 
-* `private readonly List<int> _frameRolls`: the rolls this frame consists of.
 * `private readonly bool _isLastFrame`: indicating if the frame is the last frame of a game.
+* `private readonly List<int> _frameRolls`: the rolls this frame consists of.
 
 We would like the scoreboard to be able to read the data in `_frameRolls`, but not setting, so we wrap `_frameRolls` in a `ReadOnlyCollection<int>` with a public getter.
 
@@ -79,7 +79,7 @@ We ignore the details of private methods in `BowlingScoreboard` that are used to
 We run the follwing simple examples to demonstrate the use of the system.
 
 ```C#
-// in Program.cs
+// Program.cs
 
 using BowlingChallenge;
 
@@ -97,7 +97,7 @@ bowlingScoreboard.ClearScoreboard();
 
 // gutter game
 Console.WriteLine("Gutter Game:");
-RegisterRepeatedRolls(0, 20);
+RegisterRepeatedRollsToBoard(0, 20);
 Console.Write(bowlingScoreboard.ToString());
 Console.WriteLine($"Total Score: {bowlingScoreboard.GetTotalScore()}\n");
 
@@ -105,16 +105,15 @@ bowlingScoreboard.ClearScoreboard();
 
 // perfect game
 Console.WriteLine("Perfect Game:");
-RegisterRepeatedRolls(10, 12);
+RegisterRepeatedRollsToBoard(10, 12);
 Console.Write(bowlingScoreboard.ToString());
 Console.WriteLine($"Total Score: {bowlingScoreboard.GetTotalScore()}\n");
 
-void RegisterRepeatedRolls(int pins, int rolls)
+void RegisterRepeatedRollsToBoard(int pins, int rolls)
 {
     for (int i = 0; i < rolls; ++i)
         bowlingScoreboard.RegisterRollToBoard(pins);
 }
-
 ```
 
 We get the following output.

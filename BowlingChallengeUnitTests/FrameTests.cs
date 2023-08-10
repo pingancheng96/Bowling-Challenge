@@ -223,7 +223,7 @@ public class FrameTest
         Assert.ThrowsException<ArgumentException>(() => RegisterThreeRollsToFrame(_lastFrame, 4, 1, 7));
     }
 
-    [TestMethod] // no 4rd roll
+    [TestMethod] // no 4th roll
     public void RegisterRollToFrame_LastFrameRoll5And5And6And7_ThrowsArgumentException()
     {
         Assert.ThrowsException<ArgumentException>(() =>

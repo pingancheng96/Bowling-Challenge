@@ -14,7 +14,7 @@ bowlingScoreboard.ClearScoreboard();
 
 // gutter game
 Console.WriteLine("Gutter Game:");
-RegisterRepeatedRolls(0, 20);
+RegisterRepeatedRollsToBoard(0, 20);
 Console.Write(bowlingScoreboard.ToString());
 Console.WriteLine($"Total Score: {bowlingScoreboard.GetTotalScore()}\n");
 
@@ -22,11 +22,11 @@ bowlingScoreboard.ClearScoreboard();
 
 // perfect game
 Console.WriteLine("Perfect Game:");
-RegisterRepeatedRolls(10, 12);
+RegisterRepeatedRollsToBoard(10, 12);
 Console.Write(bowlingScoreboard.ToString());
 Console.WriteLine($"Total Score: {bowlingScoreboard.GetTotalScore()}\n");
 
-void RegisterRepeatedRolls(int pins, int rolls)
+void RegisterRepeatedRollsToBoard(int pins, int rolls)
 {
     for (int i = 0; i < rolls; ++i)
         bowlingScoreboard.RegisterRollToBoard(pins);
